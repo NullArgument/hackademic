@@ -1,3 +1,11 @@
+<?php
+	// Session must be intitialized at this line in order to work
+	require_once(HACKADEMIC_PATH."extlib/NoCSRF/nocsrf.php");
+
+	// Generate CSRF token to use in form hidden field
+	$token = NoCSRF::generate( 'csrf_token' );
+
+?>
 {include file="_header.tpl"}
 <script type="text/javascript" src="{$site_root_path}extlib/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
@@ -45,6 +53,7 @@ tinyMCE.init({
 
     <div id="input_form">
     <form method="post" action="{$site_root_path}?url=admin/addarticle">
+	<input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
         <table class="article_main">
             <tr>
                 <td class="bottom"><label>Title</label></td>

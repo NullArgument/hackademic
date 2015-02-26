@@ -36,6 +36,7 @@ require_once(HACKADEMIC_PATH."model/common/class.Session.php");
 require_once(HACKADEMIC_PATH."controller/class.ChallengeMenuController.php");
 require_once(HACKADEMIC_PATH."controller/class.UserMenuController.php");
 require_once(HACKADEMIC_PATH."/esapi/class.Esapi_Utils.php");
+require_once(HACKADEMIC_PATH."extlib/NoCSRF/nocsrf.php");
 
 abstract class HackademicController {
 
@@ -111,6 +112,18 @@ abstract class HackademicController {
 				$usermenu=UserMenuController::go();
 				$this->addToView('user_menu',$usermenu);
 			}
+
+			try
+			{
+				//this is only for post requests and for testing purposes
+				NoCSRF::check( 'csrf_token', $_POST, true, 60*10, false );
+			}
+			catch ( Exception $e )
+			{
+				// CSRF attack detected
+				die();
+			}
+
 	}
 
 	/**
